@@ -127,7 +127,7 @@ namespace sdl_lib{
 	 
     SDL_Surface *surface = SDL_GetWindowSurface(window);
     SDL_RenderReadPixels(renderer, NULL, format, surface->pixels, surface->pitch);
-    std::string fname = "./screencaps/"+name+".bmp";
+    std::string fname = name+".bmp";
     std::cout << fname << std::endl;
     SDL_SaveBMP(surface, fname.c_str());
     SDL_FreeSurface(surface);

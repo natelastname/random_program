@@ -158,7 +158,7 @@ int main() {
 	if(event.key.keysym.sym == SDLK_KP_PLUS){
 	  std::string command = "python3 ./src/rangen_hack.py ";
 	  command = command + std::to_string(proglength);
-	  command = command + " | tee dynamic.c";
+	  //command = command + " | tee dynamic.c";
 	  system(command.c_str());
 	  system("mv ./dynamic.c ./src");
 	}

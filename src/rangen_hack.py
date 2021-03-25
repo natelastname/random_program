@@ -81,16 +81,21 @@ def write_c(n, toggle_pop=False):
         source = f.readlines()
     
     output = []
+    prog = []
     
     for i in source:
-        
         output.append(i)
         if(i.find("begin") != -1):
-            output.extend(gen_prog(n))
-    
-    for i in output:
-        print(i[:-1])
-                
+            prog = gen_prog(n)
+            output.extend(prog)
+
+    with open("./dynamic.c", "w") as fp:
+        fp.writelines(output)
+
+    for l in prog:
+        print(l[:-1])
+
+        
 if(len(sys.argv) == 2):
     write_c(int(sys.argv[1]))    
 

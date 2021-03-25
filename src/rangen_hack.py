@@ -16,28 +16,28 @@ import os
 # !o to refer to either x or y, chosen at random.
 # !c to refer to a random constant between 1 and 512.
 operations = [
-        "a = a + !o;",
-        "a = a - !o;",
-        "a = ~a;",
-        "a = a * !o;",
-        "a = a | !o;",
-        "a = a & !o;",
-        "a = a ^ !o;",
-        "a = a * 2;",
-        "a = __builtin_popcountll(a);",
-        "a = cl_mul(a, !o);"
-        "a = cl_mul(a, a);"
-        "a = a * 3;",
-        "a = a + 1;",
-        "a = a - 1;",
-        "a = (~a)+1;",
-        "a = 0 - a;",
-        "a = (!o * 2) ^ !o;"
-        # use these three to compute tropical polynomials
-        "a = a + !o;",
-        "a = a < !o? a : !o;",
-        "a = a + !c;"
-        ]
+    "a = a + !o;",
+    "a = a - !o;",
+    "a = ~a;",
+    "a = a * !o;",
+    "a = a | !o;",
+    "a = a & !o;",
+    "a = a ^ !o;",
+    "a = a * 2;",
+    "a = __builtin_popcountll(a);",
+    "a = cl_mul(a, !o);",
+    "a = cl_mul(a, a);",
+    "a = a * 3;",
+    "a = a + 1;",
+    "a = a - 1;",
+    "a = (~a)+1;",
+    "a = 0 - a;",
+    "a = (!o * 2) ^ !o;"
+    # use these three to compute tropical polynomials
+    #"a = a + !o;",
+    #"a = a < !o? a : !o;",
+    #"a = a + !c;"
+]
 
 
 
@@ -54,7 +54,7 @@ def gen_prog(n):
         r = random.randint(0,len(operations)-1)
         o = random.randint(0,1)
         op = ""
-
+        
         if(o == 1):
             op = "x"
             used_x = True
@@ -66,7 +66,8 @@ def gen_prog(n):
         line = line.replace("!o",op)
         line = line.replace("!c", str(random.randint(1,512)))
         prog.append(line)
-            
+
+    # If it doesn't use both x and y, regen the program
     if(used_x and used_y):    
         return prog
     elif(n < 2):

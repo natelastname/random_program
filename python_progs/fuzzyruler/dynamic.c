@@ -16,11 +16,11 @@ uint64_t cl_mul(uint64_t a, uint64_t b){
 uint64_t evaluate_dynamic(uint64_t x, uint64_t y, uint64_t util, uint64_t util2){
   uint64_t a = 0;
   // begin
-  a = 0 - a;
-  a = ~a;
-  a = cl_mul(a, x);
-  a = a - y;
-  a = a * 2;
+  a = a - x;
+  a = a & x;
+  a = a * y;
+  a = (~a)+1;
+  a = a ^ y;
   // end
   if(util > 0){
      a = a >> (util-1);

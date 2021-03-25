@@ -29,7 +29,8 @@ The idea is to generate a random function `f(x,y)` that takes two 64 bit integer
 
 There are many interesting screenshots (as well as their associated programs) included in the directory `./python_progs`.
 
-![Screenshot](python_progs/ruler square/cap.bmp)
+![Screenshot](python_progs/pizza_tile/cap.bmp)
+![Screenshot](python_progs/carryless_mult/cap.bmp)
 ![Screenshot](python_progs/blocky/cap.bmp)
 ![Screenshot](python_progs/mosaic/cap.bmp)
 

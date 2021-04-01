@@ -60,6 +60,7 @@ int main() {
   SDL_Event event;
   bool changed = false;
   bool popmode = false;
+  bool coef_vector_mode = false;
   long long util = 0;
   long long util2 = 0;
 
@@ -94,6 +95,8 @@ int main() {
 	  shiftamt = 0;
 	  util = 0;
 	  util2 = 0;
+	  coef_vector_mode = false;
+
 	}
 	// wasd movment
 	if(event.key.keysym.sym == SDLK_w){
@@ -167,8 +170,15 @@ int main() {
 	  sdl_lib::cap_frame(renderer, window, "cap");
 	  system("./save_python.sh");
 	}
-
-	
+	// Print the coefficient vector of each row instead of the truth table
+	if(event.key.keysym.sym == SDLK_o){
+	  coef_vector_mode = !coef_vector_mode;
+	  if(coef_vector_mode){
+	    std::cout << "Coef. vector mode enabled" << std::endl;
+	  }else{
+	    std::cout << "Coef. vector mode disabled" << std::endl;
+	  }
+	}
       } // end key down event	
     }
 
@@ -176,8 +186,13 @@ int main() {
       printf("\rx:%lli, y:%lli, shift:%i\n",offset_x, offset_y, shiftamt);
       // TODO: this function recompiles every time it is called.
       // This is not neccessary and greatly reduces speed.
-      sdl_lib::dynamic_evaluate(renderer, offset_x, offset_y, shiftamt,
-				&loader, util, util2);
+      if(coef_vector_mode){
+	sdl_lib::dynamic_evaluate2(renderer, offset_x, offset_y, shiftamt,
+				  &loader, util, util2);
+      } else{
+	sdl_lib::dynamic_evaluate(renderer, offset_x, offset_y, shiftamt,
+				  &loader, util, util2);
+      }
       SDL_RenderPresent(renderer);				
     }
   }

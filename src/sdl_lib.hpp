@@ -41,6 +41,12 @@ namespace sdl_lib{
 				dynamic_function * loader,
 				long long util,
 				long long util2);
+	void dynamic_evaluate2(SDL_Renderer * renderer, long long offset_x,
+						long long offset_y,
+				int shiftamt,
+				dynamic_function * loader,
+				long long util,
+				long long util2);
 	void test_evaluate(SDL_Renderer * renderer, long long offset_x,
 						long long offset_y, int shiftamt);
 	void cap_frame(SDL_Renderer * renderer, SDL_Window* window, 

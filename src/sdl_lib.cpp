@@ -83,7 +83,6 @@ namespace sdl_lib{
     SDL_RenderPresent(renderer);
   }
 
-
   // Notice how x and y are signed. (this is a deliberate choice)
   void dynamic_evaluate(SDL_Renderer * renderer, long long offset_x,
 			long long offset_y, int shiftamt,
@@ -98,6 +97,74 @@ namespace sdl_lib{
     for(long long x = -RANGE; x < RANGE+1; x++){
       for(long long y = -RANGE; y < RANGE+1; y++){
 	if((fn(x+offset_x,y+offset_y,util, util2) >> shiftamt) & 0x01){		
+	  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	}else{
+	  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	}
+	long long a = (RANGE+x)*2;
+	long long b = (RANGE+y)*2;
+	SDL_RenderDrawPoint(renderer, a, b);
+	SDL_RenderDrawPoint(renderer, a+1, b);
+	SDL_RenderDrawPoint(renderer, a, b+1);
+	SDL_RenderDrawPoint(renderer, a+1, b+1);
+
+      }
+    }
+    draw_crosshair(renderer);
+    return;
+
+  }
+  // Print the coefficient vector of each row instead of the truth table 
+  void dynamic_evaluate2(SDL_Renderer * renderer, long long offset_x,
+			long long offset_y, int shiftamt,
+			dynamic_function * loader,
+			long long util,
+			long long util2){
+
+    input_function fn = loader->reload();
+    // Compute the pixels
+    char pixels[2*RANGE][2*RANGE];
+    long long x = -RANGE;
+    long long y = -RANGE;
+    for(size_t i = 0; i < 2*RANGE; i++){
+      for(size_t j = 0; j < 2*RANGE; j++){
+	if((fn(x+i+offset_x,y+j+offset_y,util, util2) >> shiftamt) & 0x01){
+	  pixels[i][j] = 1;
+	}else{
+	  pixels[i][j] = 0;
+	}
+      }
+    }
+    // Computer the upper triangular Sierpinski matrix
+    char convert_matrix[2*RANGE][2*RANGE];
+    for(size_t i = 0; i < 2*RANGE; i++){
+      for(size_t j = 0; j < 2*RANGE; j++){
+	if( (j & i) == j){
+	  convert_matrix[j][i] = 1;
+	}else{
+	  convert_matrix[j][i] = 0;
+	}
+      }
+    }
+
+    // Set output_matrix = convert_matrix*(pixels^T).
+    char output_matrix[2*RANGE][2*RANGE];
+    for(size_t row = 0; row < 2*RANGE; row++){
+      for(size_t col = 0; col < 2*RANGE; col++){
+	int sum = 0;
+	for(size_t i = 0; i < 2*RANGE; i++){
+	  sum = sum + (    (convert_matrix[i][row])&(pixels[i][col])   );
+	}
+	output_matrix[row][col] = sum & 0x01;
+      }
+    }
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    SDL_RenderClear(renderer);
+
+    for(long long x = -RANGE; x < RANGE+1; x++){
+      for(long long y = -RANGE; y < RANGE+1; y++){
+	if(output_matrix[x+RANGE][y+RANGE] != 0){		
 	  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	}else{
 	  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);

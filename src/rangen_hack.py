@@ -92,9 +92,12 @@ def write_c(n, toggle_pop=False):
     with open("./dynamic.c", "w") as fp:
         fp.writelines(output)
 
+    print("----------------")
     for l in prog:
         print(l[:-1])
+    print("----------------")
 
+        
         
 if(len(sys.argv) == 2):
     write_c(int(sys.argv[1]))    
